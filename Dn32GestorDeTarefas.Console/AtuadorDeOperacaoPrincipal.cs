@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Dn32GestorDeTarefas.ConsoleTeste
+namespace dn32.GestorDeTarefas.ConsoleTeste
 {
     public class AtuadorDeOperacaoPrincipal
     {

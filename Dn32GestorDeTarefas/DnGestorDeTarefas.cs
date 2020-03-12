@@ -3,6 +3,8 @@
 //using System.Collections.Concurrent;
 //using System.Threading.Tasks;
 
+namespace dn32.GestorDeTarefas
+{
 //namespace Dn32GestorDeTarefas
 //{
 //    internal class DnGestorDeTarefas
@@ -65,3 +67,4 @@
 //        }
 //    }
 //}
+}

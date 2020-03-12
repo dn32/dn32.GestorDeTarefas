@@ -2,7 +2,7 @@
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
 
-namespace Dn32GestorDeTarefas
+namespace dn32.GestorDeTarefas
 {
     public abstract class Dn32Executor : IDisposable
     {

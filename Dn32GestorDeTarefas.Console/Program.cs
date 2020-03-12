@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Dn32GestorDeTarefas.ConsoleTeste
+namespace dn32.GestorDeTarefas.ConsoleTeste
 {
     class Program
     {

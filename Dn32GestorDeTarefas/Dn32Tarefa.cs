@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Dn32GestorDeTarefas
+namespace dn32.GestorDeTarefas
 {
     internal class Dn32Tarefa
     {

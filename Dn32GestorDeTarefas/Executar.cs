@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Dn32GestorDeTarefas
+namespace dn32.GestorDeTarefas
 {
     public static class Executar
     {

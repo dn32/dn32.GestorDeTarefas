@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Dn32GestorDeTarefas\Dn32GestorDeTarefas.csproj" />
+    <ProjectReference Include="..\Dn32GestorDeTarefas\dn32.GestorDeTarefas.csproj" />
   </ItemGroup>
 
 </Project>
