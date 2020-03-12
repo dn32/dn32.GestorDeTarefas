@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace dn32.GestorDeTarefas
 {
-    public abstract class Dn32Executor : IDisposable
+    public abstract class Dn32Operador : IDisposable
     {
         internal bool DisposeExecutado { get; set; }
 
@@ -14,7 +14,6 @@ namespace dn32.GestorDeTarefas
 #else
         public bool MostrarLogsNoConsole { get; set; };
 #endif
-
 
         private ConcurrentDictionary<Guid, Dn32Tarefa> TaferasEmExecucao { get; set; } = new ConcurrentDictionary<Guid, Dn32Tarefa>();
 

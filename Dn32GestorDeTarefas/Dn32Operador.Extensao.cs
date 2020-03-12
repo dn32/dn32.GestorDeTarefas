@@ -2,9 +2,9 @@
 
 namespace dn32.GestorDeTarefas
 {
-    public static class Executar
+    public static class Dn32OperadorExtensao
     {
-        public static void Iniciar(this Dn32Executor executor)
+        public static void Iniciar(this Dn32Operador executor)
         {
             if (executor.DisposeExecutado) return;
 

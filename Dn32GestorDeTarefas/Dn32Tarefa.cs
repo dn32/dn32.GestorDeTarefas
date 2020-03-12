@@ -13,16 +13,15 @@ namespace dn32.GestorDeTarefas
 
         public TimeSpan? TimeOut { get; set; }
 
+        public bool TimeOutDisparado { get; set; }
+
         public Action<Dn32Tarefa> TarefaIniciadaCallBack { get; set; }
 
         public Action<Dn32Tarefa> TarefaFinalizadaCallBack { get; set; }
 
         public void ExecutarAsync() => ExecutarInterno(false);
 
-        public void Executar()
-        {
-            ExecutarInterno(true);
-        }
+        public void Executar() => ExecutarInterno(true);
 
         public Dn32Tarefa(Action acao, string descricao, TimeSpan? timeout)
         {
@@ -39,13 +38,9 @@ namespace dn32.GestorDeTarefas
             {
                 aguardar.Wait();
                 if (TimeOutDisparado)
-                {
                     throw new TimeoutException($"O método '{Descricao}' sofreu timeout por ter demorado mais do que {TimeOut.Value.TotalMilliseconds}ms para responder.");
-                }
             }
         }
-
-        public bool TimeOutDisparado { get; set; }
 
         private Task GerarATask()
         {

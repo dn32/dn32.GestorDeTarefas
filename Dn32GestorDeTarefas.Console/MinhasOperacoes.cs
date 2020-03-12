@@ -2,7 +2,7 @@
 
 namespace dn32.GestorDeTarefas.ConsoleTeste
 {
-    public class Ativador : Dn32Executor
+    public class MinhasOperacoes : Dn32Operador
     {
         public AtuadorDeOperacaoPrincipal Atuador { get; set; }
 
@@ -15,8 +15,8 @@ namespace dn32.GestorDeTarefas.ConsoleTeste
 
         protected override void ExecutarProcessos()
         {
-            //Executar(Atuador.AtividadeDeConsultaDeComplemento, "Consultando API de complementos", TimeSpan.FromSeconds(10));
-            //Executar(Atuador.AtualizarDados, "Atualizando complementos", TimeSpan.FromSeconds(10));
+            Executar(Atuador.AtividadeDeConsultaDeComplemento, "Consultando API de complementos", TimeSpan.FromSeconds(10));
+            Executar(Atuador.AtualizarDados, "Atualizando complementos", TimeSpan.FromSeconds(10));
             Executar(Atuador.Stream, "Processando stream");
 
             ExecutarAsync(Atuador.AlimineOLixo, "Eliminando o lixo", TimeSpan.FromSeconds(10));

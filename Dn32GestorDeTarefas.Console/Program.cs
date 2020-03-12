@@ -6,7 +6,7 @@ namespace dn32.GestorDeTarefas.ConsoleTeste
     {
         static void Main(string[] args)
         {
-            var ativador = new Ativador
+            var ativador = new MinhasOperacoes
             {
                 Atuador = new AtuadorDeOperacaoPrincipal
                 {
