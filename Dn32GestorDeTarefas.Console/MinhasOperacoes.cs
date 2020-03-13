@@ -6,13 +6,6 @@ namespace dn32.GestorDeTarefas.ConsoleTeste
     {
         public AtuadorDeOperacaoPrincipal Atuador { get; set; }
 
-        protected override void TimeOut(TimeoutException timeoutEx)
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(timeoutEx.Message);
-            Console.ResetColor();
-        }
-
         protected override void ExecutarProcessos()
         {
             Executar(Atuador.AtividadeDeConsultaDeComplemento, "Consultando API de complementos", TimeSpan.FromSeconds(10));

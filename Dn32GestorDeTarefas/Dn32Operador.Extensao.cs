@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Linq;
 
 namespace dn32.GestorDeTarefas
 {
     public static class Dn32OperadorExtensao
     {
-        public static void Iniciar(this Dn32Operador executor)
+        public static RelatorioDeExecucao[] Iniciar(this Dn32Operador executor)
         {
-            if (executor.DisposeExecutado) return;
+            if (executor.DisposeExecutado) return default;
 
             try
             {
@@ -15,9 +16,12 @@ namespace dn32.GestorDeTarefas
             }
             catch (TimeoutException timeoutException)
             {
-                executor.Dispose();
                 executor.TimeOutInterno(timeoutException);
             }
+
+            var relatorio = executor.Relatorio.Reverse().ToArray();
+            executor.Dispose();
+            return relatorio;
         }
     }
 }

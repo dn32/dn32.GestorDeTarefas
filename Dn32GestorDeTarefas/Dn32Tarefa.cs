@@ -9,7 +9,7 @@ namespace dn32.GestorDeTarefas
 
         public Guid Id { get; set; }
 
-        public Action Acao { get; set; }
+        public Action<object> Acao { get; set; }
 
         public TimeSpan? TimeOut { get; set; }
 
@@ -19,11 +19,11 @@ namespace dn32.GestorDeTarefas
 
         public Action<Dn32Tarefa> TarefaFinalizadaCallBack { get; set; }
 
-        public void ExecutarAsync() => ExecutarInterno(false);
+        public void ExecutarAsync(object obj) => ExecutarInterno(false, obj);
 
-        public void Executar() => ExecutarInterno(true);
+        public void Executar(object obj) => ExecutarInterno(true, obj);
 
-        public Dn32Tarefa(Action acao, string descricao, TimeSpan? timeout)
+        public Dn32Tarefa(Action<object> acao, string descricao, TimeSpan? timeout)
         {
             Id = Guid.NewGuid();
             Acao = acao;
@@ -31,9 +31,9 @@ namespace dn32.GestorDeTarefas
             Descricao = descricao;
         }
 
-        private void ExecutarInterno(bool ehAguardar)
+        private void ExecutarInterno(bool ehAguardar, object obj)
         {
-            var aguardar = GerarATask();
+            var aguardar = GerarATask(obj);
             if (ehAguardar)
             {
                 aguardar.Wait();
@@ -42,7 +42,7 @@ namespace dn32.GestorDeTarefas
             }
         }
 
-        private Task GerarATask()
+        private Task GerarATask(object obj)
         {
             return Task.Run(() =>
             {
@@ -50,11 +50,11 @@ namespace dn32.GestorDeTarefas
 
                 if (TimeOut == null)
                 {
-                    Acao();
+                    Acao(obj);
                 }
                 else
                 {
-                    if (!Task.Run(Acao).Wait(TimeOut.Value))
+                    if (!Task.Run(() => Acao(obj)).Wait(TimeOut.Value))
                     {
                         TimeOutDisparado = true;
                         return;

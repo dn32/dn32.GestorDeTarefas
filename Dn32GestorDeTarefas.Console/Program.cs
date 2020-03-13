@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace dn32.GestorDeTarefas.ConsoleTeste
 {
@@ -15,7 +16,10 @@ namespace dn32.GestorDeTarefas.ConsoleTeste
                 }
             };
 
-            ativador.Iniciar();
+            var relatorioCompleto = ativador.Iniciar();
+
+            var status = relatorioCompleto.Select(x => $" {x.Inicio.ToString("HH:mm:ss fff")} - {x.Fim?.ToString("HH:mm:ss fff")?? "**:**:** ***"} : {x.Descricao}").ToArray();
+            Console.WriteLine(string.Join("\n", status));
         }
     }
 }
