@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dn32GestorDeTarefas", "Dn32GestorDeTarefas\Dn32GestorDeTarefas.csproj", "{F7A6FF92-B6DB-4933-9364-A808A22F4C0F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dn32.GestorDeTarefas", "Dn32GestorDeTarefas\dn32.GestorDeTarefas.csproj", "{F7A6FF92-B6DB-4933-9364-A808A22F4C0F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dn32GestorDeTarefas.ConsoleTeste", "Dn32GestorDeTarefas.Console\Dn32GestorDeTarefas.ConsoleTeste.csproj", "{5E6B565C-CC67-4774-AC94-C0E9C8A6CD0D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dn32.GestorDeTarefas.ConsoleTeste", "Dn32GestorDeTarefas.Console\dn32.GestorDeTarefas.ConsoleTeste.csproj", "{5E6B565C-CC67-4774-AC94-C0E9C8A6CD0D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Dn32GestorDeTarefas.ConsoleTeste
+namespace dn32.GestorDeTarefas.ConsoleTeste
 {
-    public class Ativador : Dn32Executor
+    public class MinhasOperacoes : Dn32Operador
     {
         public AtuadorDeOperacaoPrincipal Atuador { get; set; }
 

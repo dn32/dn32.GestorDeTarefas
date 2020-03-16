@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Linq;
 
-namespace Dn32GestorDeTarefas.ConsoleTeste
+namespace dn32.GestorDeTarefas.ConsoleTeste
 {
     class Program
     {
         static void Main(string[] args)
         {
-            var ativador = new Ativador
+            var ativador = new MinhasOperacoes
             {
                 Atuador = new AtuadorDeOperacaoPrincipal
                 {
@@ -15,7 +16,10 @@ namespace Dn32GestorDeTarefas.ConsoleTeste
                 }
             };
 
-            ativador.Iniciar();
+            var relatorioCompleto = ativador.Iniciar();
+
+            var status = relatorioCompleto.Select(x => $" {x.Inicio.ToString("HH:mm:ss fff")} - {x.Fim?.ToString("HH:mm:ss fff")?? "**:**:** ***"} : {x.Descricao}").ToArray();
+            Console.WriteLine(string.Join("\n", status));
         }
     }
 }

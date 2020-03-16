@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Dn32GestorDeTarefas
+namespace dn32.GestorDeTarefas
 {
     internal class Dn32Tarefa
     {
@@ -9,22 +9,21 @@ namespace Dn32GestorDeTarefas
 
         public Guid Id { get; set; }
 
-        public Action Acao { get; set; }
+        public Action<object> Acao { get; set; }
 
         public TimeSpan? TimeOut { get; set; }
+
+        public bool TimeOutDisparado { get; set; }
 
         public Action<Dn32Tarefa> TarefaIniciadaCallBack { get; set; }
 
         public Action<Dn32Tarefa> TarefaFinalizadaCallBack { get; set; }
 
-        public void ExecutarAsync() => ExecutarInterno(false);
+        public void ExecutarAsync(object obj) => ExecutarInterno(false, obj);
 
-        public void Executar()
-        {
-            ExecutarInterno(true);
-        }
+        public void Executar(object obj) => ExecutarInterno(true, obj);
 
-        public Dn32Tarefa(Action acao, string descricao, TimeSpan? timeout)
+        public Dn32Tarefa(Action<object> acao, string descricao, TimeSpan? timeout)
         {
             Id = Guid.NewGuid();
             Acao = acao;
@@ -32,22 +31,18 @@ namespace Dn32GestorDeTarefas
             Descricao = descricao;
         }
 
-        private void ExecutarInterno(bool ehAguardar)
+        private void ExecutarInterno(bool ehAguardar, object obj)
         {
-            var aguardar = GerarATask();
+            var aguardar = GerarATask(obj);
             if (ehAguardar)
             {
                 aguardar.Wait();
                 if (TimeOutDisparado)
-                {
                     throw new TimeoutException($"O método '{Descricao}' sofreu timeout por ter demorado mais do que {TimeOut.Value.TotalMilliseconds}ms para responder.");
-                }
             }
         }
 
-        public bool TimeOutDisparado { get; set; }
-
-        private Task GerarATask()
+        private Task GerarATask(object obj)
         {
             return Task.Run(() =>
             {
@@ -55,11 +50,11 @@ namespace Dn32GestorDeTarefas
 
                 if (TimeOut == null)
                 {
-                    Acao();
+                    Acao(obj);
                 }
                 else
                 {
-                    if (!Task.Run(Acao).Wait(TimeOut.Value))
+                    if (!Task.Run(() => Acao(obj)).Wait(TimeOut.Value))
                     {
                         TimeOutDisparado = true;
                         return;

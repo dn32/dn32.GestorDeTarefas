@@ -2,9 +2,9 @@
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
 
-namespace Dn32GestorDeTarefas
+namespace dn32.GestorDeTarefas
 {
-    public abstract class Dn32Executor : IDisposable
+    public abstract class Dn32Operador : IDisposable
     {
         internal bool DisposeExecutado { get; set; }
 
@@ -15,8 +15,9 @@ namespace Dn32GestorDeTarefas
         public bool MostrarLogsNoConsole { get; set; };
 #endif
 
-
         private ConcurrentDictionary<Guid, Dn32Tarefa> TaferasEmExecucao { get; set; } = new ConcurrentDictionary<Guid, Dn32Tarefa>();
+      
+        public ConcurrentBag<RelatorioDeExecucao> Relatorio { get; set; } = new ConcurrentBag<RelatorioDeExecucao>();
 
         protected virtual void TimeOut(TimeoutException timeoutEx)
         {
@@ -32,7 +33,6 @@ namespace Dn32GestorDeTarefas
         internal void TimeOutInterno(TimeoutException timeoutException)
         {
             TimeOut(timeoutException);
-            Dispose();
         }
 
         public void AguardarAConclusaoDeTodasAsTarefas()
@@ -40,32 +40,37 @@ namespace Dn32GestorDeTarefas
             while (!DisposeExecutado && TaferasEmExecucao.Count > 0) Task.Delay(1);
         }
 
-        protected void Executar(Action acao, string descricao, TimeSpan? timeout = null)
+        protected void Executar(Action<object> acao, string descricao, TimeSpan? timeout = null, object obj = null)
         {
             if (DisposeExecutado) return;
             AguardarAConclusaoDeTodasAsTarefas();
             var tarefa = AdicionarTarefa(acao, descricao, timeout);
-            tarefa.Executar();
+            tarefa.Executar(obj);
         }
 
-        protected void ExecutarAsync(Action acao, string descricao, TimeSpan? timeout = null)
+        protected void ExecutarAsync(Action<object> acao, string descricao, TimeSpan? timeout = null, object obj = null)
         {
             if (DisposeExecutado) return;
             var tarefa = AdicionarTarefa(acao, descricao, timeout);
-            tarefa.ExecutarAsync();
+            tarefa.ExecutarAsync(obj);
         }
-
-        private Dn32Tarefa AdicionarTarefa(Action acao, string descricao, TimeSpan? timeout)
+       
+        private Dn32Tarefa AdicionarTarefa(Action<object> acao, string descricao, TimeSpan? timeout)
         {
+            var relatorioDaTarefa = new RelatorioDeExecucao { Descricao = descricao };
+            Relatorio.Add(relatorioDaTarefa);
+
             var tarefa = new Dn32Tarefa(acao, descricao, timeout)
             {
                 TarefaIniciadaCallBack = (Dn32Tarefa tarefaLocal) =>
                 {
+                    relatorioDaTarefa.Inicio = DateTime.Now;
                     Log($"Tarefa iniciada: {descricao}");
                 },
 
                 TarefaFinalizadaCallBack = (Dn32Tarefa tarefaLocal) =>
                 {
+                    relatorioDaTarefa.Fim = DateTime.Now;
                     TaferasEmExecucao.TryRemove(tarefaLocal.Id, out _);
                     Log($"Tarefa finalizada: {descricao}");
                 }
@@ -81,6 +86,7 @@ namespace Dn32GestorDeTarefas
             DisposeExecutado = true;
 
             TaferasEmExecucao?.Clear();
+            Relatorio?.Clear();
         }
     }
 }
