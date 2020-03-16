@@ -18,7 +18,12 @@ namespace Dn32GestorDeTarefas
 
         private ConcurrentDictionary<Guid, Dn32Tarefa> TaferasEmExecucao { get; set; } = new ConcurrentDictionary<Guid, Dn32Tarefa>();
 
-        protected abstract void TimeOut(TimeoutException timeoutException);
+        protected virtual void TimeOut(TimeoutException timeoutEx)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(timeoutEx.Message);
+            Console.ResetColor();
+        }
 
         protected virtual void Log(string mensagem) { if (MostrarLogsNoConsole) Console.WriteLine(mensagem); }
 
