@@ -16,7 +16,7 @@ namespace dn32.GestorDeTarefas
 #endif
 
         private ConcurrentDictionary<Guid, Dn32Tarefa> TaferasEmExecucao { get; set; } = new ConcurrentDictionary<Guid, Dn32Tarefa>();
-      
+
         public ConcurrentBag<RelatorioDeExecucao> Relatorio { get; set; } = new ConcurrentBag<RelatorioDeExecucao>();
 
         protected virtual void TimeOut(TimeoutException timeoutEx)
@@ -40,22 +40,31 @@ namespace dn32.GestorDeTarefas
             while (!DisposeExecutado && TaferasEmExecucao.Count > 0) Task.Delay(1);
         }
 
+        protected void Executar(Func<object, Task> acao, string descricao, TimeSpan? timeout = null, object obj = null)
+        {
+
+        }
+
         protected void Executar(Action<object> acao, string descricao, TimeSpan? timeout = null, object obj = null)
         {
+            Func<object, Task> acaoFunc = (a) => Task.Run(() => acao(a));
+
             if (DisposeExecutado) return;
             AguardarAConclusaoDeTodasAsTarefas();
-            var tarefa = AdicionarTarefa(acao, descricao, timeout);
+            var tarefa = AdicionarTarefa(acaoFunc, descricao, timeout);
             tarefa.Executar(obj);
         }
 
         protected void ExecutarAsync(Action<object> acao, string descricao, TimeSpan? timeout = null, object obj = null)
         {
+            Func<object, Task> acaoFunc = (a) => Task.Run(() => acao(a));
+          
             if (DisposeExecutado) return;
-            var tarefa = AdicionarTarefa(acao, descricao, timeout);
+            var tarefa = AdicionarTarefa(acaoFunc, descricao, timeout);
             tarefa.ExecutarAsync(obj);
         }
-       
-        private Dn32Tarefa AdicionarTarefa(Action<object> acao, string descricao, TimeSpan? timeout)
+
+        private Dn32Tarefa AdicionarTarefa(Func<object, Task> acao, string descricao, TimeSpan? timeout)
         {
             var relatorioDaTarefa = new RelatorioDeExecucao { Descricao = descricao };
             Relatorio.Add(relatorioDaTarefa);

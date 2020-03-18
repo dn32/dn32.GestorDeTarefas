@@ -9,7 +9,7 @@ namespace dn32.GestorDeTarefas
 
         public Guid Id { get; set; }
 
-        public Action<object> Acao { get; set; }
+        public Func<object, Task> Acao { get; set; }
 
         public TimeSpan? TimeOut { get; set; }
 
@@ -23,7 +23,7 @@ namespace dn32.GestorDeTarefas
 
         public void Executar(object obj) => ExecutarInterno(true, obj);
 
-        public Dn32Tarefa(Action<object> acao, string descricao, TimeSpan? timeout)
+        public Dn32Tarefa(Func<object, Task> acao, string descricao, TimeSpan? timeout)
         {
             Id = Guid.NewGuid();
             Acao = acao;
@@ -50,7 +50,7 @@ namespace dn32.GestorDeTarefas
 
                 if (TimeOut == null)
                 {
-                    Acao(obj);
+                    Acao(obj).Wait();
                 }
                 else
                 {
