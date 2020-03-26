@@ -19,6 +19,8 @@ namespace dn32.GestorDeTarefas
 
         public Action<Dn32Tarefa> TarefaFinalizadaCallBack { get; set; }
 
+        public Action<Dn32Tarefa, Exception> TarefaErroCallBack { get; set; }
+
         public void ExecutarAsync(object obj) => ExecutarInterno(false, obj);
 
         public void Executar(object obj) => ExecutarInterno(true, obj);
@@ -42,6 +44,12 @@ namespace dn32.GestorDeTarefas
             }
         }
 
+        private void Ex(Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            TarefaErroCallBack?.Invoke(this, ex);
+        }
+
         private Task GerarATask(object obj)
         {
             return Task.Run(() =>
@@ -50,13 +58,29 @@ namespace dn32.GestorDeTarefas
 
                 if (TimeOut == null)
                 {
-                    Acao(obj).Wait();
+                    try
+                    {
+                        Acao(obj).Wait();
+                    }
+                    catch (Exception ex)
+                    {
+                        Ex(ex);
+                        return;
+                    }
                 }
                 else
                 {
-                    if (!Task.Run(() => Acao(obj)).Wait(TimeOut.Value))
+                    try
                     {
-                        TimeOutDisparado = true;
+                        if (!Task.Run(() => Acao(obj)).Wait(TimeOut.Value))
+                        {
+                            TimeOutDisparado = true;
+                            return;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Ex(ex);
                         return;
                     }
                 }

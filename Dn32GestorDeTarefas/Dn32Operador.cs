@@ -42,7 +42,7 @@ namespace dn32.GestorDeTarefas
 
         protected void Executar(Func<object, Task> acao, string descricao, TimeSpan? timeout = null, object obj = null)
         {
-
+            Executar((o) => acao(o).Wait(), descricao, timeout, obj);
         }
 
         protected void Executar(Action<object> acao, string descricao, TimeSpan? timeout = null, object obj = null)
@@ -58,7 +58,7 @@ namespace dn32.GestorDeTarefas
         protected void ExecutarAsync(Action<object> acao, string descricao, TimeSpan? timeout = null, object obj = null)
         {
             Func<object, Task> acaoFunc = (a) => Task.Run(() => acao(a));
-          
+
             if (DisposeExecutado) return;
             var tarefa = AdicionarTarefa(acaoFunc, descricao, timeout);
             tarefa.ExecutarAsync(obj);
@@ -80,8 +80,18 @@ namespace dn32.GestorDeTarefas
                 TarefaFinalizadaCallBack = (Dn32Tarefa tarefaLocal) =>
                 {
                     relatorioDaTarefa.Fim = DateTime.Now;
+                    relatorioDaTarefa.Sucesso = true;
                     TaferasEmExecucao.TryRemove(tarefaLocal.Id, out _);
-                    Log($"Tarefa finalizada: {descricao}");
+                    Log($"Tarefa finalizada com sucesso: {descricao}");
+                },
+
+                TarefaErroCallBack = (Dn32Tarefa tarefaLocal, Exception ex) =>
+                {
+                    relatorioDaTarefa.Fim = DateTime.Now;
+                    relatorioDaTarefa.Sucesso = false;
+                    relatorioDaTarefa.Erro = ex.Message;
+                    TaferasEmExecucao.TryRemove(tarefaLocal.Id, out _);
+                    Log($"Tarefa finalizada com erro: {descricao} - {ex.Message}");
                 }
             };
 
@@ -96,6 +106,7 @@ namespace dn32.GestorDeTarefas
 
             TaferasEmExecucao?.Clear();
             Relatorio?.Clear();
+            Log($"Processo concluído");
         }
     }
 }
