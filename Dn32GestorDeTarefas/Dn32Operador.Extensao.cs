@@ -11,7 +11,7 @@ namespace dn32.GestorDeTarefas
 
             try
             {
-                executor.ExecutarProcessos();
+                executor.ExecutarProcessosAsync();
                 executor.AguardarAConclusaoDeTodasAsTarefas();
             }
             catch (TimeoutException timeoutException)

@@ -28,7 +28,7 @@ namespace dn32.GestorDeTarefas
 
         protected virtual void Log(string mensagem) { if (MostrarLogsNoConsole) Console.WriteLine(mensagem); }
 
-        protected internal abstract void ExecutarProcessos();
+        protected internal abstract void ExecutarProcessosAsync();
 
         internal void TimeOutInterno(TimeoutException timeoutException)
         {
