@@ -4,7 +4,7 @@
     <TargetFrameworks>netstandard2.1</TargetFrameworks>
     <LangVersion>8</LangVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.0.0-beta07</Version>
+    <Version>1.0.0.0-beta08</Version>
     <PackageProjectUrl>https://github.com/dn32/dn32.GestorDeTarefas</PackageProjectUrl>
     <RepositoryUrl>https://github.com/dn32/dn32.GestorDeTarefas</RepositoryUrl>
     <SignAssembly>true</SignAssembly>
