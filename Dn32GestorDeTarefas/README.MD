@@ -1,1 +1,0 @@
-Há um vazamento de memória que precisa ser arrumado antes de usar
