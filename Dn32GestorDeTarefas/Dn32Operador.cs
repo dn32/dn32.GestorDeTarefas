@@ -12,7 +12,7 @@ namespace dn32.GestorDeTarefas
         public bool MostrarLogsNoConsole { get; set; } = true;
 
 #else
-        public bool MostrarLogsNoConsole { get; set; };
+        public bool MostrarLogsNoConsole { get; set; }
 #endif
 
         private ConcurrentDictionary<Guid, Dn32Tarefa> TaferasEmExecucao { get; set; } = new ConcurrentDictionary<Guid, Dn32Tarefa>();
